@@ -7,28 +7,21 @@ public class CubeClickDetector : MonoBehaviour
 
     private void OnEnable()
     {
-        _mouseInput.Clicked += FindClickCube;
+        _mouseInput.Clicked += FindClickedCube;
     }
 
     private void OnDisable()
     {
-        _mouseInput.Clicked -= FindClickCube;
+        _mouseInput.Clicked -= FindClickedCube;
     }
 
-    private void FindClickCube()
+    private void FindClickedCube()
     {
-        if(_camera == null)
-            return;
-        
         Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
-        RaycastHit hit;
-
-        if(Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            CubeDecision cube = hit.collider.GetComponent<CubeDecision>();
-
-            if(cube != null)
+            if (hit.collider.TryGetComponent(out CubeDecision cube))
             {
                 cube.HandleClick();
             }
